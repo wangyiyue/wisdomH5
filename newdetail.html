@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>智慧农场</title>
+    <link rel="stylesheet" type="text/css" href="css/newdetail.css?v=1.1" />
+    <script type="text/javascript" src="./js/flexible.js"></script>
+    <script type="text/javascript" src="./js/doT.min.js"></script>
+</head>
+
+<body>
+    <script id="detailTemplate" type="text/x-dot-template">
+        <div class="f_db title">{{=it.title}}</div>
+        <span class="f_db time">{{=it.createDate}}</span>
+        <div class="new_html">
+            {{=it.content}}
+        </div>
+    </script>    
+    <div class="news_content" id="detailBox"></div>
+
+    <!-- loading弹窗-begin -->
+    <div class="loading full_screen f_dn" id="loadingView">
+        <div class="tent f_pa flex flex-v flex-align-center">
+            <img class="f_db" src="./img/spinner.gif">
+            <span class="f_db" id="loadingText">加载中···</span>
+        </div>
+    </div>
+    <!-- loading弹窗-end -->
+    <script src="./js/common.js"></script>
+    <script src="./js/newdetail.js?v=1.0"></script>
+    <script>
+
+    </script>
+</body>
+
+</html>

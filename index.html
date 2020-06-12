@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>智慧农场</title>
+  <link rel="stylesheet" type="text/css" href="css/index.css" />
+  <script type="text/javascript" src="./js/flexible.js"></script>
+  <script type="text/javascript" src="./js/doT.min.js"></script>
+</head>
+
+<body>
+  <script id="pageTemplate" type="text/x-dot-template">
+    <div class="header">
+      <div class="header_imgbox f_pr">
+        <img class="proimg" src={{=it.productImage}}>
+      </div>
+      <div class="header_stars flex flex-pack-justify  flex-align-center">
+        <span class="f_db ellipsis">{{=it.productName}}</span>
+        <div class="header_stars_right flex flex-align-center">
+          <dl class="flex flex-align-center">
+            {{~[1,2,3,4,5]:value:index}}
+              <dt class="star_item">
+                {{?value>it.score}}
+                  <img src="./img/star_gray.png">
+                {{??}}
+                  <img src="./img/star_cur.png">
+                {{?}}
+              </dt>
+            {{~}}
+          </dl>
+          <span class="f_db"></span>
+          <button onclick="controlEvaluateAlert('on')">我要评分</button>
+        </div>
+      </div>
+      <div class="header_db flex flex-align-center">
+        <div class="flex flex-align-center">
+          <img class="f_db" src="./img/menu.png">
+          <span class="f_db">品种&nbsp;&nbsp;{{=it.varietyName}}</span>
+        </div>
+        <div class="item_mar flex flex-align-center">
+          <img class="f_db" src="./img/time.png">
+          <span class="f_db">发布时间&nbsp;&nbsp;{{=it.marketTime}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="title flex flex-align-center">
+        <em class="f_db"></em>
+        <span class="f_db">指标描述</span>
+      </div>
+      <div class="p_text">
+        {{=it.remark}}
+      </div>
+    </div>
+    <div class="section">
+      <div class="title flex flex-align-center">
+        <em class="f_db"></em>
+        <span class="f_db">所属公司</span>
+      </div>
+      <div class="company flex">
+        <img class="f_db" src="{{=it.logo}}">
+        <div class="company_info flex flex-1 flex-v">
+          <div class="tbox flex flex-align-center flex-pack-justify">
+            <em class="f_db">{{=it.companyName}}</em>
+            <span onclick="controlCompanyProfileAlert('on')">查看公司简介</span>
+          </div>
+          <span class="f_db">营业执照已验证</span>
+          <div class="item flex flex-align-center">
+            <img class="f_db" src="./img/person.png">
+            <span class="f_db">负责人：{{=it.linkman}}</span>
+          </div>
+          <div class="item flex flex-align-center">
+            <img class="f_db" src="./img/position.png">
+            <span class="f_db ellipsis">地址：{{=it.address}}</span>
+            <b class="f_db"></b>
+            <button class="f_db" onclick="controlMapPositionAlert('on')">导航</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="title flex flex-align-center">
+        <em class="f_db"></em>
+        <span class="f_db">溯源档案</span>
+      </div>
+      <div class="source_info">
+        <div class="source_stars flex flex-align-center">
+          <span class="f_db">档案完整度</span>
+          <dl class="flex flex-align-center">
+              {{~[1,2,3,4,5]:value:index}}
+              <dt>
+                {{?value>it.fileIntegrity}}
+                <img class="f_db" src="./img/star_gray.png">
+                {{??}}
+                <img class="f_db" src="./img/star_green.png">
+                {{?}}
+              </dt>
+            {{~}}
+        </div>
+        <ul class="source_list">
+          <li onclick="controlGrowthPicturesAlert('on')" class="flex flex-align-center flex-pack-justify border_bottom">
+            <div class="lbox flex flex-align-center">
+              <img class="f_db" src="./img/sz_icon.png">
+              <span class="f_db">全生长期图片</span>
+            </div>
+            <img class="f_db" src="./img/right_arrow.png">
+          </li>
+          <li onclick="controlFertilizerUseAlert('on')" class="flex flex-align-center flex-pack-justify border_bottom">
+            <div class="lbox flex flex-align-center">
+              <img class="f_db" src="./img/fl_icon.png">
+              <span class="f_db">肥料使用详情</span>
+            </div>
+            <img class="f_db" src="./img/right_arrow.png">
+          </li>
+          <li onclick="controlDrugUseAlert('on')" class="flex flex-align-center flex-pack-justify border_bottom">
+            <div class="lbox flex flex-align-center">
+              <img class="f_db" src="./img/ny_icon.png">
+              <span class="f_db">农药使用详情</span>
+            </div>
+            <img class="f_db" src="./img/right_arrow.png">
+          </li>
+          <li onclick="controlKeyEnvironmentalAlert('on')" class="flex flex-align-center flex-pack-justify border_bottom">
+            <div class="lbox flex flex-align-center">
+              <img class="f_db" src="./img/hj_icon.png">
+              <span class="f_db">关键环境数据</span>
+            </div>
+            <img class="f_db" src="./img/right_arrow.png">
+          </li>
+          <li onclick="TraceabilityVideoAlert('on')" class="flex flex-align-center flex-pack-justify border_bottom">
+            <div class="lbox flex flex-align-center">
+              <img class="f_db" src="./img/vd_icon.png">
+              <span class="f_db">产品溯源视频</span>
+            </div>
+            <img class="f_db" src="./img/right_arrow.png">
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="section">
+      <div class="title flex flex-align-center">
+        <em class="f_db"></em>
+        <span class="f_db">产品简介</span>
+      </div>
+      <div class="p_text">
+        {{=it.productInformation}}
+      </div>
+    </div>
+  </script>
+  <div class="content">
+    <div id="infoBox"></div>
+    <div id="AuthenticationListBox"></div>
+    <script id="AuthenticationListTemplate" type="text/x-dot-template">
+      <div class="section">
+        <div class="title flex flex-align-center">
+          <em class="f_db"></em>
+          <span class="f_db">产品认证</span>
+        </div>
+        <ul class="list_group">
+          {{~it:item:index}}
+            <li class="flex flex-align-center flex-pack-justify border_bottom" onclick="controlAuthenticationItemAlert('on','{{=item.strData}}')">
+              <span class="f_db">{{=item.typeName}}</span>
+              <div class="rbox flex flex-align-center flex-pack-justify">
+                <em class="f_db">已认证</em>
+                <img class="f_db" src="./img/right_arrow.png">
+              </div>
+            </li>
+          {{~}}
+        </ul>
+      </div>
+    </script>
+    <div id="eselfInspectionBox"></div>
+    <script id="eselfInspectionTemplate" type="text/x-dot-template">
+      <div class="section" id="eselfInspectionBox">
+        <div class="title flex flex-align-center">
+          <em class="f_db"></em>
+          <span class="f_db">企业自检</span>
+        </div>
+        <ul class="list_group">
+          {{~it:item:index}}
+            <li class="flex flex-align-center flex-pack-justify border_bottom" onclick="controlEselfInspectionAlert('on','{{=item.strData}}')">
+              <span class="f_db">{{=item.itemName}}</span>
+              <div class="rbox flex flex-align-center flex-pack-justify">
+                <img class="f_db" src="./img/right_arrow.png">
+              </div>
+            </li>
+          {{~}}
+        </ul>
+    </div>
+    </script>
+    <div class="section">
+      <div class="title flex flex-align-center">
+        <em class="f_db"></em>
+        <span class="f_db">记录数据</span>
+      </div>
+      <ul class="list_group">
+        <li class="flex flex-align-center flex-pack-justify border_bottom" onclick="controlAgriculturalRecordsAlert('on')">
+          <span class="f_db">农事记录</span>
+          <div class="rbox flex flex-align-center flex-pack-justify">
+            <img class="f_db" src="./img/right_arrow.png">
+          </div>
+        </li>
+        <li class="flex flex-align-center flex-pack-justify border_bottom" onclick="controlDistributionRecordAlert('on')">
+          <span class="f_db">配送记录</span>
+          <div class="rbox flex flex-align-center flex-pack-justify">
+            <img class="f_db" src="./img/right_arrow.png">
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div id="seedInformationBox"></div>
+    <script id="seedInformationTemplate" type="text/x-dot-template">
+      <div class="section">
+        <div class="title flex flex-align-center">
+          <em class="f_db"></em>
+          <span class="f_db">种子信息</span>
+        </div>
+        <div class="seed_info">
+          <span class="f_db ellipsis">名称：{{=it.varietyName}}</span>
+          <span class="f_db ellipsis">厂家：{{=it.manufacturer}}</span>
+          <div class="btns flex flex-align-center border_top">
+            {{?it.productionCertificate!=''}}
+            <button onclick="controlCertificateImagelert('on','生产合格证','{{=it.productionCertificate}}')" class="f_db">生产合格证</button>
+            {{?}}
+            {{?it.saleCertificate!=''}}
+            <button onclick="controlCertificateImagelert('on','销售记录/证书','{{=it.saleCertificate}}')" class="f_db">销售记录/证书</button>
+            {{?}}
+            {{?it.notTransgenosisCertificate!=''}}
+            <button onclick="controlCertificateImagelert('on','非转基因证明','{{=it.notTransgenosisCertificate}}')" class="f_db">非转基因证明</button>
+            {{?}}
+          </div>
+        </div>
+      </div>
+    </script>
+    <div id="buyInformationBox"></div>
+    <script id="buyInformationTemplate" type="text/x-dot-template">
+      <div class="section">
+        <div class="title flex flex-align-center">
+          <em class="f_db"></em>
+          <span class="f_db">购买信息</span>
+        </div>
+        <div class="buy_info">
+          <dl class="tab flex flex-align-center flex-pack-justify">
+            {{?it.activeIndex==1}}
+              <dt class="active f_tac flex-1" onclick="exchangeBuyInformation('1')">网店购买</dt>
+              <dt class="f_tac flex-1" onclick="exchangeBuyInformation('2')">实体店购买</dt>
+              <dt class="f_tac flex-1" onclick="exchangeBuyInformation('3')">销售联络方式</dt>
+            {{??it.activeIndex==2}}
+              <dt class="f_tac flex-1" onclick="exchangeBuyInformation('1')">网店购买</dt>
+              <dt class="active f_tac flex-1" onclick="exchangeBuyInformation('2')">实体店购买</dt>
+              <dt class="f_tac flex-1" onclick="exchangeBuyInformation('3')">销售联络方式</dt>
+            {{??}}
+                <dt class="f_tac flex-1" onclick="exchangeBuyInformation('1')">网店购买</dt>
+                <dt class="f_tac flex-1" onclick="exchangeBuyInformation('2')">实体店购买</dt>
+                <dt class="active f_tac flex-1" onclick="exchangeBuyInformation('3')">销售联络方式</dt>
+            {{?}}
+          </dl>
+          <ul class="list_group">
+              {{?it.activeIndex==1}}
+                {{~it.shopUrlList:item:index}}
+                <li class="flex flex-align-center flex-pack-justify border_bottom">
+                  <span class="f_db">{{=item.shopUrl}}</span>
+                </li>
+                {{~}}
+              {{??it.activeIndex==2}}
+                {{~it.shopAddressList:item:index}}
+                <li class="flex flex-align-center flex-pack-justify border_bottom">
+                  <span class="f_db">{{=item.shopAddress}}</span>
+                </li>
+                {{~}}
+              {{??}}
+                {{~it.salesmanList:item:index}}
+                <li class="flex flex-align-center flex-pack-justify border_bottom">
+                  <span class="f_db">{{=item.salesmanName}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{=item.salesmanPhone}}</span>
+                </li>
+                {{~}}
+              {{?}}
+          </ul>
+        </div>
+      </div>
+    </script>
+  </div>
+  <!-- loading弹窗-begin -->
+  <div class="loading full_screen f_dn" id="loadingView">
+    <div class="tent f_pa flex flex-v flex-align-center">
+      <img class="f_db" src="./img/spinner.gif">
+      <span class="f_db" id="loadingText">加载中···</span>
+    </div>
+  </div>
+  <!-- loading弹窗-end -->
+
+  <!-- 提示弹窗-begin -->
+  <div class="msgNote full_screen f_dn" id="msgView">
+    <div class="tent f_pa flex flex-v flex-align-center">
+      <span class="f_db" id="msgText">操作成功！</span>
+    </div>
+  </div>
+  <!-- 提示弹窗-end -->
+
+  <!-- 我要评价弹窗-begin -->
+  <div class="full_screen evaluate_star f_dn" id="evaluateStar">
+    <div class="bg f_pa" onclick="controlEvaluateAlert('off')"></div>
+    <div class="tent f_pa flex flex-v flex-align-center" id='evaluateAlert'></div>
+    <script id="evaluateTemplate" type="text/x-dot-template">
+      <span class="f_db title f_tac ellipsis">您对{{=it.proName}}满意吗？</span>
+      <ul class="star_box flex flex-align-center flex-pack-center">
+        {{~it.list:value:index}}
+          <li class="satr_item" onclick="selectEvaluteSrat('{{=value}}')">
+            {{?value>it.defealt}}
+                <img class="f_bd" src="./img/s_gary.png">
+            {{??}}
+                <img class="f_bd" src="./img/s_active.png">
+            {{?}}
+          </li>
+        {{~}}
+      </ul>
+      {{?it.defealt==1}}
+        <span class="note f_db f_tac">与描述严重不符</span>
+      {{??it.defealt==2}}
+        <span class="note f_db f_tac">与描述不一致</span>
+      {{??it.defealt==3}}
+        <span class="note f_db f_tac">与描述不完全一致</span>
+      {{??it.defealt==4}}
+        <span class="note f_db f_tac">与描述基本一致</span>
+      {{??it.defealt==5}}
+        <span class="note f_db f_tac">与描述完全一致</span>
+      {{?}}
+      <button class="btn" onclick="submitEvaluteStar('{{=it.defealt}}')">提交</button>
+    </script>
+  </div>
+  <!-- 我要评价弹窗-end -->
+
+  <!-- 企业自检弹窗-begin -->
+  <div class="detailAlert f_dn" id="eselfInspectionAlert">
+    <div class="bg f_pa"></div>
+    <div class="tent f_pa">
+      <div class="tentAlert" id="InspectionDetailBox"></div>
+      <script id="InspectionDetailTemplate" type="text/x-dot-template">
+        <div class="form">
+          <div class="title flex flex-align-center border_bottom">
+            <em class="f_db"></em>
+            <b class="f_db">检测信息</b>
+          </div>
+          <ul class="list">
+            <li class="flex flex-align-center flex-pack-justify">
+              <em class="f_db">检测项目</em>
+              <b class="f_db">{{=it.itemName}}</b>
+            </li>
+            <li class="flex flex-align-center flex-pack-justify">
+              <em class="f_db">检测日期</em>
+              <b class="f_db">{{=it.testTime}}</b>
+            </li>
+            <li class="flex flex-align-center flex-pack-justify">
+              <em class="f_db">检测机关</em>
+              <b class="f_db">{{=it.organization}}</b>
+            </li>
+            <li class="flex flex-align-center flex-pack-justify">
+              <em class="f_db">检测人员</em>
+              <b class="f_db">{{=it.testingErsonnel}}</b>
+            </li>
+          </ul>
+        </div>
+        <div class="table">
+          <div class="title flex flex-align-center border_bottom">
+            <em class="f_db"></em>
+            <b class="f_db">检测指标</b>
+          </div>
+          <dl class="list border">
+            <dt class="th border_bottom flex flex-align-center flex-pack-justify">
+              <span class="f_db f_tac">检测指标</span>
+              <span class="f_db f_tac">检测值</span>
+              <span class="f_db f_tac">检测标准</span>
+            </dt>
+            {{~it.itemList:item:index}}
+            <dt class="th border_bottom flex flex-align-center flex-pack-justify">
+              <em class="f_db f_tac">{{=item.projectName}}</em>
+              <em class="f_db f_tac">{{=item.value}}{{=item.units}}</em>
+              <em class="f_db f_tac">{{=item.standardValue}}{{=item.units}}</em>
+            </dt>
+            {{~}}
+          </dl>
+        </div>
+        <div class="img">
+          <div class="title flex flex-align-center border_bottom">
+            <em class="f_db"></em>
+            <b class="f_db">图片</b>
+          </div>
+          <div class="img_box">
+            {{~it.imageList:item:index}}
+            <img class="f_db" src={{=item}}>
+            {{~}}
+          </div>
+        </div>
+      </script>
+      <div class="btn f_pa border_top flex flex-align-center flex-pack-center">
+        <button class="f_pr" onclick="controlEselfInspectionAlert('off')">关闭</button>
+      </div>
+    </div>
+  </div>
+  <!-- 企业自检弹窗-end -->
+
+  <!-- 产品认证弹窗-begin -->
+  <div class="detailAlert f_dn" id="authenticationItemAlert">
+      <div class="bg f_pa"></div>
+      <div class="tent f_pa">
+        <div class="tentAlert" id="authenticationItemBox"></div>
+        <script id="authenticationItemTemplate" type="text/x-dot-template">
+          <div class="form">
+            <div class="title flex flex-align-center border_bottom">
+              <em class="f_db"></em>
+              <b class="f_db">认证信息</b>
+            </div>
+            <ul class="list">
+              <li class="flex flex-align-center flex-pack-justify">
+                <em class="f_db">认证类型</em>
+                <b class="f_db">{{=it.typeName}}</b>
+              </li>
+              <li class="flex flex-align-center flex-pack-justify">
+                <em class="f_db">颁证日期</em>
+                <b class="f_db">{{=it.releaseDate}}</b>
+              </li>
+              <li class="flex flex-align-center flex-pack-justify">
+                <em class="f_db">失效日期</em>
+                <b class="f_db">{{=it.validDate}}</b>
+              </li>
+              <li class="flex flex-align-center flex-pack-justify">
+                <em class="f_db">证书编号</em>
+                <b class="f_db">{{=it.number}}</b>
+              </li>
+              <li class="flex flex-align-center flex-pack-justify">
+                <em class="f_db">颁证机关</em>
+                <b class="f_db">{{=it.organization}}</b>
+              </li>
+            </ul>
+          </div>
+          <div class="img">
+            <div class="title flex flex-align-center border_bottom">
+              <em class="f_db"></em>
+              <b class="f_db">图片</b>
+            </div>
+            <div class="img_box">
+              {{~it.imageList:item:index}}
+              <img class="f_db" src={{=item}}>
+              {{~}}
+            </div>
+          </div>
+        </script>
+        <div class="btn f_pa border_top flex flex-align-center flex-pack-center">
+          <button class="f_pr" onclick="controlAuthenticationItemAlert('off')">关闭</button>
+        </div>
+      </div>
+    </div>
+  <!-- 产品认证弹窗-end -->
+
+  <!-- 农事记录弹窗-begin -->
+  <div class="detailAlert f_dn" id="agriculturalRecordsAlert">
+      <div class="bg f_pa"></div>
+      <div class="tent f_pa">
+        <div class="tentAlert" id="agriculturalRecordsBox"></div>
+        <script id="agriculturalRecordsTemplate" type="text/x-dot-template">
+          <div class="table">
+            <div class="title flex flex-align-center border_bottom">
+              <em class="f_db"></em>
+              <b class="f_db">农事记录</b>
+            </div>
+            <dl class="list border">
+              <dt class="th border_bottom flex flex-align-center flex-pack-justify">
+                <span class="f_db f_tac">农事时间</span>
+                <span class="f_db f_tac">农事内容</span>
+                <span class="f_db f_tac">操作人</span>
+              </dt>
+              {{~it:item:index}}
+              <dt class="th border_bottom flex flex-align-center flex-pack-justify">
+                <em class="f_db f_tac">{{=item.logTime}}</em>
+                <em class="f_db f_tac">{{=item.content}}</em>
+                <em class="f_db f_tac">{{=item.operator}}</em>
+              </dt>
+              {{~}}
+            </dl>
+          </div>
+        </script>
+        <div class="btn f_pa border_top flex flex-align-center flex-pack-center">
+          <button class="f_pr" onclick="controlAgriculturalRecordsAlert('off')">关闭</button>
+        </div>
+      </div>
+    </div>
+  <!-- 农事记录弹窗-begin -->
+
+  <!-- 配送记录弹窗-begin -->
+  <div class="detailAlert f_dn" id="distributionRecordAlert">
+      <div class="bg f_pa"></div>
+      <div class="tent f_pa">
+        <div class="tentAlert" id="distributionRecordBox"></div>
+        <script id="distributionRecordsTemplate" type="text/x-dot-template">
+          <div class="table">
+            <div class="title flex flex-align-center border_bottom">
+              <em class="f_db"></em>
+              <b class="f_db">配送记录</b>
+            </div>
+            <dl class="list border">
+              <dt class="th border_bottom flex flex-align-center flex-pack-justify">
+                <span class="f_db f_tac">配送日期</span>
+                <span class="f_db f_tac">收货人</span>
+                <span class="f_db f_tac">配送员</span>
+                <span class="f_db f_tac">目的地</span>
+              </dt>
+              {{~it:item:index}}
+              <dt class="th border_bottom flex flex-align-center flex-pack-justify">
+                <em class="f_db f_tac">{{=item.dispatchingTime}}</em>
+                <em class="f_db f_tac">{{=item.consignee}}</em>
+                <em class="f_db f_tac">{{=item.deliveryman}}</em>
+                <em class="f_db f_tac">{{=item.address}}</em>
+              </dt>
+              {{~}}
+            </dl>
+          </div>
+        </script>
+        <div class="btn f_pa border_top flex flex-align-center flex-pack-center">
+          <button class="f_pr" onclick="controlDistributionRecordAlert('off')">关闭</button>
+        </div>
+      </div>
+    </div>
+    <!-- 配送记录弹窗-end -->
+
+    <!-- 公司简介弹窗-begin -->
+    <div class="detailAlert f_dn" id="companyProfileAlert">
+        <div class="bg f_pa"></div>
+        <div class="tent f_pa">
+            <div class="tentAlert" id="companyProfileBox"></div>
+            <script id="companyProfileTemplate" type="text/x-dot-template">
+                <div class="form">
+                    <div class="title flex flex-align-center border_bottom">
+                        <em class="f_db"></em>
+                        <b class="f_db">公司简介</b>
+                    </div>
+                    <p class="word">
+                        {{=it.organInformation}}
+                    </p>
+                </div>
+            </script>
+            <div class="btn f_pa border_top flex flex-align-center flex-pack-center">
+                <button class="f_pr" onclick="controlCompanyProfileAlert('off')">关闭</button>
+            </div>
+        </div>
+    </div>
+    <!-- 公司简介弹窗-end -->
+
+    <!-- 地址定位弹窗-begin -->
+    <div class="detailAlert f_dn" id="mapPositionAlert">
+        <div class="bg f_pa"></div>
+        <div class="tent f_pa">
+            <div class="tentAlert">
+                <div class="mapView" id="mapView"></div>
+            </div>
+            <div class="btn f_pa border_top flex flex-align-center flex-pack-center">
+                <button class="f_pr" onclick="controlMapPositionAlert('off')">关闭</button>
+            </div>
+        </div>
+    </div>
+    <!-- 地址定位弹窗-end -->
+
+    <!-- 生长期图片弹窗-begin -->
+    <div class="detailAlert f_dn" id="growthPicturesAlert">
+        <div class="bg f_pa"></div>
+        <div class="tent f_pa">
+          <div class="tentAlert" id="growthPicturesBox"></div>
+          <script id="growthPicturesTemplate" type="text/x-dot-template">
+            <div class="img">
+              <div class="title flex flex-align-center border_bottom">
+                <em class="f_db"></em>
+                <b class="f_db">生长期图片</b>
+              </div>
+              <div class="img_box">
+                {{~it:item:index}}
+                <img class="f_db" src={{=item.pictureUrl}}>
+                {{~}}
+              </div>
+            </div>
+          </script>
+          <div class="btn f_pa border_top flex flex-align-center flex-pack-center">
+            <button class="f_pr" onclick="controlGrowthPicturesAlert('off')">关闭</button>
+          </div>
+        </div>
+      </div>
+    <!-- 生长期图片弹窗-end -->
+
+    <!-- 肥料使用弹窗-begin -->
+    <div class="detailAlert f_dn" id="fertilizerUseAlert">
+        <div class="bg f_pa"></div>
+        <div class="tent f_pa">
+          <div class="tentAlert" id="fertilizerUseBox"></div>
+          <script id="fertilizerUseTemplate" type="text/x-dot-template">
+            <div class="table">
+                <div class="title flex flex-align-center border_bottom">
+                  <em class="f_db"></em>
+                  <b class="f_db">肥料使用</b>
+                </div>
+                <dl class="list border">
+                  <dt class="th border_bottom flex flex-align-center flex-pack-justify">
+                    <span class="f_db f_tac">肥料类型</span>
+                    <span class="f_db f_tac">肥料名称</span>
+                    <span class="f_db f_tac">使用时间</span>
+                    <span class="f_db f_tac">用量</span>
+                  </dt>
+                  {{~it:item:index}}
+                  <dt class="th border_bottom flex flex-align-center flex-pack-justify">
+                    <em class="f_db f_tac">{{=item.fertilizerName}}</em>
+                    <em class="f_db f_tac">{{=item.name}}</em>
+                    <em class="f_db f_tac">{{=item.logTime}}</em>
+                    <em class="f_db f_tac">{{=item.number}}{{=item.unitName}}</em>
+                  </dt>
+                  {{~}}
+                </dl>
+            </div>
+          </script>
+          <div class="btn f_pa border_top flex flex-align-center flex-pack-center">
+            <button class="f_pr" onclick="controlFertilizerUseAlert('off')">关闭</button>
+          </div>
+        </div>
+      </div>
+    <!-- 肥料使用弹窗-end -->
+
+    <!-- 药品使用弹窗-begin -->
+    <div class="detailAlert f_dn" id="drugUseAlert">
+        <div class="bg f_pa"></div>
+        <div class="tent f_pa">
+          <div class="tentAlert" id="drugUseBox"></div>
+          <script id="drugUseTemplate" type="text/x-dot-template">
+            <div class="table">
+                <div class="title flex flex-align-center border_bottom">
+                  <em class="f_db"></em>
+                  <b class="f_db">农药使用</b>
+                </div>
+                <dl class="list border">
+                  <dt class="th border_bottom flex flex-align-center flex-pack-justify">
+                    <span class="f_db f_tac">药品名称</span>
+                    <span class="f_db f_tac">使用时间</span>
+                    <span class="f_db f_tac">用量</span>
+                  </dt>
+                  {{~it:item:index}}
+                  <dt class="th border_bottom flex flex-align-center flex-pack-justify">
+                    <em class="f_db f_tac">{{=item.name}}</em>
+                    <em class="f_db f_tac">{{=item.logTime}}</em>
+                    <em class="f_db f_tac">{{=item.number}}{{=item.unitName}}</em>
+                  </dt>
+                  {{~}}
+                </dl>
+            </div>
+          </script>
+          <div class="btn f_pa border_top flex flex-align-center flex-pack-center">
+            <button class="f_pr" onclick="controlDrugUseAlert('off')">关闭</button>
+          </div>
+        </div>
+      </div>
+    <!-- 药品使用弹窗-end -->
+
+    <!-- 关键环境数据弹窗-begin -->
+    <div class="detailAlert f_dn" id="KeyEnvironmentalAlert">
+        <div class="bg f_pa"></div>
+        <div class="tent f_pa">
+            <div class="tentAlert" id="KeyEnvironmentalBox"></div>
+            <script id="KeyEnvironmentalTemplate" type="text/x-dot-template">
+                <!-- <div class="table">
+                    <div class="title flex flex-align-center border_bottom">
+                      <em class="f_db"></em>
+                      <b class="f_db">关键环境数据</b>
+                    </div>
+                    <dl class="list border">
+                      <dt class="th border_bottom flex flex-align-center flex-pack-justify">
+                        <span class="f_db f_tac">环境指标</span>
+                        <span class="f_db f_tac">数值</span>
+                      </dt>
+                      {{~it:item:index}}
+                      <dt class="th border_bottom flex flex-align-center flex-pack-justify">
+                        <em class="f_db f_tac">{{=item.name}}</em>
+                        <em class="f_db f_tac">{{=item.value}}</em>
+                      </dt>
+                      {{~}}
+                    </dl>
+                </div> -->
+                <div class="table">
+                    <div class="title flex flex-align-center border_bottom">
+                      <em class="f_db"></em>
+                      <b class="f_db">关键环境数据</b>
+                    </div>
+                    {{~it:item:index}}
+                    <div>
+                        <canvas class="dataV_cavans" id="vCavans{{=index}}"></canvas>
+                        <p class="dataV_name f_db f_tac">{{=item.typeName}}</p>
+                    </div>
+                    {{~}}
+                </div>
+            </script>
+            <div class="btn f_pa border_top flex flex-align-center flex-pack-center">
+                <button class="f_pr" onclick="controlKeyEnvironmentalAlert('off')">关闭</button>
+            </div>
+        </div>
+    </div>
+    <!-- 关键环境数据弹窗-end -->
+
+    <!-- 显示证书图片弹窗-begin -->
+    <div class="detailAlert f_dn" id="certificateImageAlert">
+        <div class="bg f_pa"></div>
+        <div class="tent f_pa">
+          <div class="tentAlert" id="certificateImageBox"></div>
+          <script id="certificateImageTemplate" type="text/x-dot-template">
+            <div class="img">
+              <div class="title flex flex-align-center border_bottom">
+                <em class="f_db"></em>
+                <b class="f_db">{{=it.title}}</b>
+              </div>
+              <div class="img_box">
+                <img class="f_db" src={{=it.img}}>
+              </div>
+            </div>
+          </script>
+          <div class="btn f_pa border_top flex flex-align-center flex-pack-center">
+            <button class="f_pr" onclick="controlCertificateImagelert('off')">关闭</button>
+          </div>
+        </div>
+    </div>
+    <!-- 显示证书图片弹窗-end -->
+
+    <!-- 显示溯源视频弹窗-begin -->
+    <div class="detailAlert f_dn" id="TraceabilityVideoAlert">
+        <div class="bg f_pa"></div>
+        <div class="tent f_pa">
+            <div class="tentAlert">
+                <div class="table">
+                    <div class="title flex flex-align-center border_bottom">
+                        <em class="f_db"></em>
+                        <b class="f_db">产品溯源视频</b>
+                    </div>
+                    <div id="videoPlayer"></div>
+                </div>
+            </div>
+          <div class="btn f_pa border_top flex flex-align-center flex-pack-center">
+            <button class="f_pr" onclick="controlTraceabilityVideoAlert('off')">关闭</button>
+          </div>
+        </div>
+    </div>
+    <!-- 显示溯源视频弹窗-end -->
+
+
+  <script src="./js/common.js"></script>
+  <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=b07c748ccdd687d14af1883e5374e1ef&plugin=AMap.Geocoder"></script>
+  <script src="https://gw.alipayobjects.com/os/antv/assets/f2/3.4.2/f2.min.js"></script>
+  <script src="./js/ezuikit/ezuikit.js"></script>
+  <script src="./js/index.js?v=1.5"></script>
+  <script>
+
+  </script>
+</body>
+
+</html>

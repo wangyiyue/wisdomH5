@@ -1,0 +1,31 @@
+@import url('./common.css');
+
+.news_content{
+    width: 100%;
+    min-height: 100vh;
+    background: #fff;
+    overflow: hidden;
+}
+.news_content>.title{
+    margin-top: .533333rem;
+    padding: 0 .266667rem;
+    font-size: .453333rem;
+    font-weight: bold;
+    line-height: .586667rem;
+}
+.news_content>.time{
+    font-size: .32rem;
+    color: #999;
+    padding-left: .266667rem;
+    margin-top: .213333rem;
+}
+.news_content>.new_html{
+    width: 100%;
+    margin-top: .266667rem;
+    padding: .4rem .266667rem;
+}
+
+.news_content>.new_html img{
+    width: 100%;
+    max-width: 100% !important;
+}
